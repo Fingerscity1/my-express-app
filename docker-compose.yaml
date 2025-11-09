@@ -1,0 +1,20 @@
+services:
+  # Nasza aplikacja Express
+  my-app:
+    # Obraz, który nasz GitHub Action wysłał na Docker Hub
+    image: gax36714/my-express-app:latest
+    ports:
+      - "8080:8080" # Zakładając, że apka działa na 8080
+    # Zawsze pobieraj najnowszą wersję obrazu
+    pull_policy: always
+    restart: unless-stopped
+
+  # Strażnik, który pilnuje aktualizacji
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      # Musi mieć dostęp do gniazda Dockera, aby restartować kontenery
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Sprawdzaj co 30 sekund (na potrzeby testu)
+    command: --interval 30
+    restart: unless-stopped
