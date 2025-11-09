@@ -25,3 +25,9 @@ jobs:
           push: true
           # ZMIEŃ PONIŻSZĄ LINIĘ!
           tags: gax36714/my-express-app:latest
+# KROK 4: Powiadom Render.com, że jest nowy obraz
+      - name: Trigger Render Deployment
+        # Uruchom ten krok tylko wtedy, gdy poprzednie się udały
+        if: success()
+        # Użyj sekretu, który właśnie dodałeś
+        run: curl "${{ secrets.RENDER_DEPLOY_HOOK }}"
